@@ -83,6 +83,18 @@ $ cat tracks
 
 $ cl-ipod update < tracks
 
+Removing tracks from iPod:
+
+1. Add '-' symbol on front of the track in the tracks file for removing.
+
+$ cat tracks
+ album-18|song-4|Erik|3|:iPod_Control:Music:F42:libgpod481489.mp3
+-piano-concertos|movement-1|Sarah|4|:iPod_Control:Music:F43:libgpod736488.mp3
+
+2. Run cl-ipod:
+
+$ cl-ipod update < tracks
+
 Updating MPEG Tags in file system:
 
 1. Prepare a list file:
