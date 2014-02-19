@@ -24,10 +24,16 @@ void usage() {
 	);
 }
 
+const char*
+get_mntdir() {
+	const char* mntdir = getenv("IPOD_MOUNT_DIR");
+	return mntdir ? mntdir : "/mnt/ipod";
+}
+
 Itdb_iTunesDB *
 get_db() {
 	GError *error = NULL;
-	Itdb_iTunesDB *db = itdb_parse("/mnt/ipod", &error);
+	Itdb_iTunesDB *db = itdb_parse(get_mntdir(), &error);
 	if (db == NULL) {
 		fprintf(stderr, "Failed to parse: %s\n", error->message);
 		return NULL;
@@ -116,7 +122,7 @@ void delete_track(Itdb_iTunesDB *db, string line) {
 
 			// delete file from iPod
 			char buf[255]; 
-			snprintf(buf, sizeof(buf), "/mnt/ipod%s", track->ipod_path);
+			snprintf(buf, sizeof(buf), "%s%s", get_mntdir(), track->ipod_path);
 			itdb_filename_ipod2fs(buf);
 			if (unlink(buf))
 				fprintf(stderr, "Error: failed to delete: %s\n", buf);
@@ -185,7 +191,7 @@ void update_track(Itdb_iTunesDB *db, string line) {
 			printf("Updating - %s|%s|%s|%s\n", track->album, track->title, track->artist, track->ipod_path);
 
 			char buf[1024]; 
-			snprintf(buf, sizeof(buf), "/mnt/ipod%s", track->ipod_path);
+			snprintf(buf, sizeof(buf), "%s%s", get_mntdir(), track->ipod_path);
 			itdb_filename_ipod2fs(buf);
 
 			TagLib::MPEG::File file(buf);
