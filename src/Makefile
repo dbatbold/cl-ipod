@@ -1,15 +1,8 @@
-CFLAGS = -I/usr/local/include/gpod-1.0/gpod \
-	-I /usr/include/gpod-1.0/gpod \
-	-I /usr/include/glib-2.0 \
-	-I /usr/lib64/glib-2.0/include \
-	-I /usr/lib/glib-2.0/include \
-	-I /usr/include/taglib \
-	-lgpod \
-	-ltag \
-	-lglib-2.0
+CFLAGS = `pkg-config --cflags glib-2.0 libgpod-1.0 taglib`
+LDFLAGS = `pkg-config --libs glib-2.0 libgpod-1.0 taglib`
 
 all: main.cc
-	g++ main.cc -o cl-ipod ${CFLAGS}
+	g++ $(CFLAGS) main.cc -o cl-ipod $(LDFLAGS)
 
 clean:
 	-rm *.o cl-ipod
