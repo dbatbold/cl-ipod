@@ -12,7 +12,7 @@ using namespace std;
 #include <glib/gstdio.h>
 #include <id3v2tag.h>
 #include <mpegfile.h>
-#include <itdb.h>
+#include <gpod/itdb.h>
 
 void usage() {
 	printf("Usage: cl-ipod {command}\n"
