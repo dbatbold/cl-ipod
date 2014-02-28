@@ -190,9 +190,10 @@ void update_track(Itdb_iTunesDB *db, string line) {
 		if (track && *track->ipod_path && string::npos != line.find(track->ipod_path)) {
 			printf("Updating - %s|%s|%s|%s\n", track->album, track->title, track->artist, track->ipod_path);
 
-			char buf[1024]; 
-			snprintf(buf, sizeof(buf), "%s%s", get_mntdir(), track->ipod_path);
-			itdb_filename_ipod2fs(buf);
+			char ipod_path[1024], buf[1024];
+			snprintf(ipod_path, sizeof(ipod_path), "%s", track->ipod_path);
+			itdb_filename_ipod2fs(ipod_path);
+			snprintf(buf, sizeof(buf), "%s%s", get_mntdir(), ipod_path);
 
 			TagLib::MPEG::File file(buf);
 			TagLib::Tag *tag = file.tag();
