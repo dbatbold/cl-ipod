@@ -12,7 +12,7 @@ using namespace std;
 #include <glib/gstdio.h>
 #include <id3v2tag.h>
 #include <mpegfile.h>
-#include <itdb.h>
+#include <gpod/itdb.h>
 
 void usage() {
 	printf("Usage: cl-ipod {command}\n"
@@ -24,10 +24,16 @@ void usage() {
 	);
 }
 
+const char*
+get_mntdir() {
+	const char* mntdir = getenv("IPOD_MOUNT_DIR");
+	return mntdir ? mntdir : "/mnt/ipod";
+}
+
 Itdb_iTunesDB *
 get_db() {
 	GError *error = NULL;
-	Itdb_iTunesDB *db = itdb_parse("/mnt/ipod", &error);
+	Itdb_iTunesDB *db = itdb_parse(get_mntdir(), &error);
 	if (db == NULL) {
 		fprintf(stderr, "Failed to parse: %s\n", error->message);
 		return NULL;
@@ -116,7 +122,7 @@ void delete_track(Itdb_iTunesDB *db, string line) {
 
 			// delete file from iPod
 			char buf[255]; 
-			snprintf(buf, sizeof(buf), "/mnt/ipod%s", track->ipod_path);
+			snprintf(buf, sizeof(buf), "%s%s", get_mntdir(), track->ipod_path);
 			itdb_filename_ipod2fs(buf);
 			if (unlink(buf))
 				fprintf(stderr, "Error: failed to delete: %s\n", buf);
@@ -184,9 +190,10 @@ void update_track(Itdb_iTunesDB *db, string line) {
 		if (track && *track->ipod_path && string::npos != line.find(track->ipod_path)) {
 			printf("Updating - %s|%s|%s|%s\n", track->album, track->title, track->artist, track->ipod_path);
 
-			char buf[1024]; 
-			snprintf(buf, sizeof(buf), "/mnt/ipod%s", track->ipod_path);
-			itdb_filename_ipod2fs(buf);
+			char ipod_path[1024], buf[1024];
+			snprintf(ipod_path, sizeof(ipod_path), "%s", track->ipod_path);
+			itdb_filename_ipod2fs(ipod_path);
+			snprintf(buf, sizeof(buf), "%s%s", get_mntdir(), ipod_path);
 
 			TagLib::MPEG::File file(buf);
 			TagLib::Tag *tag = file.tag();
