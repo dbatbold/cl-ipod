@@ -1,5 +1,3 @@
-using namespace std;
-
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -13,6 +11,8 @@ using namespace std;
 #include <id3v2tag.h>
 #include <mpegfile.h>
 #include <gpod/itdb.h>
+
+using namespace std;
 
 void usage() {
 	printf("Usage: cl-ipod {command}\n"
@@ -277,7 +277,7 @@ void update() {
 }
 
 // Update MPEG tag from Stdin
-// sytax: file=/path-to-file|album=Album Name|title=Song Title|artist=Artist Name|track=Track Number
+// syntax: file=/path-to-file|album=Album Name|title=Song Title|artist=Artist Name|track=Track Number
 void tag() {
 	string line;
 	while (getline(cin, line)) {
@@ -323,7 +323,7 @@ void tag() {
 }
 
 // Show MPEG tag info from Stdin
-// sytax: /path-to-file
+// syntax: /path-to-file
 void info() {
 	string line;
 	while (getline(cin, line)) {

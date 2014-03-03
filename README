@@ -31,7 +31,7 @@ $ mount -o uid=username /dev/sdb1 /mnt/ipod
 
 username  - your username
 /dev/sdb1 - iPod file system partition
-/mnt/ipod - the mount point (currently cannot be changed)
+/mnt/ipod - the mount point (IPOD_MOUNT_DIR environment variable can override)
 
 Getting iPod track list:
 
