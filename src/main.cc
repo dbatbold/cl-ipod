@@ -204,9 +204,11 @@ void update_track(Itdb_iTunesDB *db, string line) {
 			TagLib::String album = parse_tag_line(line, "album");
 			TagLib::String title = parse_tag_line(line, "title");
 			TagLib::String artist = parse_tag_line(line, "artist");
+			TagLib::String genre = parse_tag_line(line, "genre");
 			const char *album_c = album.toCString();
 			const char *title_c = title.toCString();
 			const char *artist_c = artist.toCString();
+			const char *genre_c = genre.toCString();
 			int updated = 0;
 			if (album.length() > 0) {
 				tag->setAlbum(album);
@@ -221,6 +223,11 @@ void update_track(Itdb_iTunesDB *db, string line) {
 			if (artist.length() > 0) {
 				tag->setArtist(artist);
 				track->artist = g_strdup(artist_c);
+				updated = 1;
+			}
+			if (genre.length() > 0) {
+				tag->setGenre(genre);
+				track->genre = g_strdup(genre_c);
 				updated = 1;
 			}
 			string tr_title = track->title;
