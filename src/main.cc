@@ -288,7 +288,7 @@ void update() {
 void tag() {
 	string line;
 	while (getline(cin, line)) {
-		if (line.find("file=") == -1)
+		if (line.find("file=") != 0)
 			continue;
 		struct stat st;
 		TagLib::String filename = parse_tag_line(line, "file");
